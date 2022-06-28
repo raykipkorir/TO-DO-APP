@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}
+All Tasks
+{% endblock title %}
+
+{% block content %}
+    <div>
+        <h1>Create Tasks</h1>
+    </div>
+    <div>
+        <form action="" method = "post">
+            {% csrf_token %}
+            {{ form.title}}
+            <input type="submit" value = "Create">
+        </form>
+    </div>
+    
+    <div>
+        {% if tasks %}
+        <div>
+            <h1>All Tasks</h1>
+        </div>
+        
+        {% for task in tasks %}
+        <div>
+            {% if task.completed %}
+                <p><strike>{{task}}</strike></p>
+                <p><span>{{task.created}}</span></p>
+            {% else %}
+                <p><span>{{task}}</span></p>
+                <p><span>{{task.created}}</span></p>
+            {% endif %}
+            
+            <p><a href="{{ task.get_absolute_url }}">Update</a></p>
+            <form action="{% url 'delete_task' task.id %}" method="post">
+                {% csrf_token %}
+                <input type="submit" value = "Delete">
+            </form>
+        </div>    
+        {% endfor %}
+
+        {% else %}
+        <h2>No Tasks</h2>
+        {% endif %}   
+    </div>
+    
+    
+
+{% endblock content %}
